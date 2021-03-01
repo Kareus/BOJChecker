@@ -1,7 +1,7 @@
 # BOJChecker
 ### Introduction
 
-Parser for reading user profile from Baekjoon Profile.
+Parser for reading user profile from Baekjoon Online Judge.
 
 You can read User Tier, Solved problem list from BOJ and solved.ac.
 
