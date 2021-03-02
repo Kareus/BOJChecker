@@ -144,7 +144,7 @@ def console_checkproblem():
 
             try:
                 urllib.request.urlopen("https://www.acmicpc.net/problem/"+problem)
-            except urllib.error.HTTPError:
+            except:
                 print("Problem", problem, "not found!")
                 continue
 
