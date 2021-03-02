@@ -5,6 +5,7 @@ import BOJParser
 
 users = []
 userData = dict()
+classes = [[]] #dummy for 0
 
 def wait():
     try:
@@ -19,6 +20,17 @@ def clear():
     else:
         os.system('clear')\
     
+def loadClasses():
+    if classes:
+        classes.clear()
+        classes.append([])
+
+    print('Preloading solved.ac Class 1~10... Please wait for a moment')
+    for i in range(1, 11):
+        c = BOJParser.parseClass(i)
+        classes.append(c)
+    return
+
 def console_adduser():
     while True:
         clear()
@@ -40,6 +52,7 @@ def console_adduser():
 
         u = u.split(',')
         for name in u:
+            name = name.strip()
             if name == '0':
                 print('Try exit code in single')
                 continue
@@ -64,7 +77,7 @@ def console_adduser():
 
 def console_checkproblem():
     clear()
-    print("Input problem numbers to check. ex) '1000', '1001,1002'  input '0' to exit")
+    print("Input problem numbers to check. ex) '1000', '1001,1002', 'class1'  input '0' to exit")
     while True:
         ps = input("Problems: ")
         if ps == '0':
@@ -73,8 +86,60 @@ def console_checkproblem():
         print()
         ps = ps.split(',')
         for problem in ps:
-            if ps == '0':
+            problem = problem.strip()
+            if problem == '0':
                 print('Try exit code in single')
+                continue
+
+            if problem[:5] == 'class':
+                problem = int(problem[5:])
+                if problem <= 0 or problem > 10:
+                    print('Class', problem, 'not found')
+                    continue
+
+                print('', end='\t')
+                for p in classes[problem]['problem']:
+                    if len(p) == 4:
+                        print(' ', p, end=' ')
+                    else:
+                        print(p, end=' ')
+
+                print()
+
+                for u in users:
+                    cnt = 0
+                    ecnt = 0
+                    L = len(classes[problem]['problem'])
+                    EL = len(classes[problem]['essential'])
+
+                    print('', end='\t  ')
+                    for p in classes[problem]['problem']:
+                        if p in userData[u]['problems']:
+                            print("  O  ", end=' ')
+                            cnt += 1
+                            if p in classes[problem]['essential']:
+                                ecnt += 1
+                        else:
+                            print("  X  ", end=' ')
+                    
+                    print('\nUser:', u, '| Solved:', cnt, '/', L, '| Percentage:', f'{(cnt / L * 100) : .2f}', '%')
+                    print('Essential:', ecnt, '/', EL, '| Percentage:', f'{(ecnt / EL * 100) : .2f}', '%')
+                    state = 'Not Acquired'
+                    if problem <= 2 and cnt >= 16:
+                        state = 'Acquired'
+                    if cnt >= 20:
+                        if problem >= 9:
+                            state = 'Acquired'
+                        else:
+                            state = 'Acquired'
+
+                    if ecnt >= EL:
+                        state = 'Acquired+'
+                    
+                    if cnt >= L:
+                        state = 'Acquired++'
+
+                    print('State:', state)
                 continue
 
             try:
@@ -128,6 +193,7 @@ def console_main():
             for u in users:
                 print("Username:", u)
                 print("Tier:",userData[u]['tier'])
+                print("Class:", userData[u]['class'])
                 print("Problem Solved:", len(userData[u]['problems']),'\n')
 
             wait()
