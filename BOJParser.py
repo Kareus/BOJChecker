@@ -23,8 +23,17 @@ def parseUser(username):
     response = urllib.request.urlopen(req)
     html = response.read()
     soup = BeautifulSoup(html, 'html.parser')
-    tier = soup.select_one('#__next > div.ProfileHeaderCard__ProfileHeaderCardWrapper-sc-1jyljpm-0.bsLsWg > div.ProfileHeaderCardstyles__ProfileHeaderCardTop-s3gh4u-0.dlfIwk > div > div > div:nth-child(4) > span:nth-child(3)').b
-    imgs = soup.select_one('#__next > div.ProfileHeaderCard__ProfileHeaderCardWrapper-sc-1jyljpm-0.bsLsWg > div.ProfileHeaderCardstyles__ProfileHeaderCardTop-s3gh4u-0.dlfIwk > div > div > div:nth-child(4) > span.ProfileHeaderCardstyles__UserinfoName-s3gh4u-2.hTpwBx').find_all('img')
+
+    try:
+        tier = soup.select_one('#__next > div.ProfileHeaderCard__ProfileHeaderCardWrapper-sc-1jyljpm-0.bsLsWg > div.ProfileHeaderCardstyles__ProfileHeaderCardTop-s3gh4u-0.dlfIwk > div > div > div:nth-child(4) > span:nth-child(3)').b
+        imgs = soup.select_one('#__next > div.ProfileHeaderCard__ProfileHeaderCardWrapper-sc-1jyljpm-0.bsLsWg > div.ProfileHeaderCardstyles__ProfileHeaderCardTop-s3gh4u-0.dlfIwk > div > div > div:nth-child(4) > span.ProfileHeaderCardstyles__UserinfoName-s3gh4u-2.hTpwBx').find_all('img')
+        
+    except: #user not registered in solved.ac
+
+        ret['tier'] = 'Not Registered'
+        ret['problems'] = solved
+        ret['class'] = '?'
+        return ret
 
     cl = None
     for img in imgs:
