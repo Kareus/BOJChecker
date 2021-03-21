@@ -91,6 +91,7 @@ def console_checkproblem():
                 print('Try exit code in single')
                 continue
 
+            ## class
             if problem[:5] == 'class':
                 problem = int(problem[5:])
                 if problem <= 0 or problem > 10:
@@ -141,6 +142,7 @@ def console_checkproblem():
 
                     print('State:', state)
                 continue
+            ## class
 
             try:
                 urllib.request.urlopen("https://www.acmicpc.net/problem/"+problem)
@@ -150,6 +152,15 @@ def console_checkproblem():
 
             print('Problem:', problem, '\n')
 
+            inClass = 0
+            for classNum in range(1, 11):
+                if problem in classes[classNum]['problem']:
+                    inClass = classNum
+                    break
+
+            if inClass > 0:
+                print('Included in Class', inClass)
+                
             for u in users:
                 if problem in userData[u]['problems']:
                     print(u, ':', 'O')

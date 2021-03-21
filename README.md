@@ -15,4 +15,6 @@ Easy stuff, huh.
 
 ### Note
 
+It uses urllib and bs4 (beautiful soup) libraries.
+
 It would take some time to read data from web.
