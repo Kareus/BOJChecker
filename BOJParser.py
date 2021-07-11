@@ -25,8 +25,8 @@ def parseUser(username):
     soup = BeautifulSoup(html, 'html.parser')
 
     try:
-        tier = soup.select_one('#__next > div.ProfileHeaderCard__ProfileHeaderCardWrapper-sc-1jyljpm-0.bsLsWg > div.ProfileHeaderCardstyles__ProfileHeaderCardTop-s3gh4u-0.dlfIwk > div > div > div:nth-child(4) > span:nth-child(3)').b
-        imgs = soup.select_one('#__next > div.ProfileHeaderCard__ProfileHeaderCardWrapper-sc-1jyljpm-0.bsLsWg > div.ProfileHeaderCardstyles__ProfileHeaderCardTop-s3gh4u-0.dlfIwk > div > div > div:nth-child(4) > span.ProfileHeaderCardstyles__UserinfoName-s3gh4u-2.hTpwBx').find_all('img')
+        tier = soup.select_one('#__next > div.ProfileHeaderCard__ProfileHeaderCardWrapper-sc-1ds1sbv-0.dJhVPe > div.ProfileHeaderCardstyles__ProfileHeaderCardTop-wboshd-0.iothCP > div > div > div:nth-child(4) > span:nth-child(3)').b
+        imgs = soup.select_one('#__next > div.ProfileHeaderCard__ProfileHeaderCardWrapper-sc-1ds1sbv-0.dJhVPe > div.ProfileHeaderCardstyles__ProfileHeaderCardTop-wboshd-0.iothCP > div > div > div:nth-child(4) > span.ProfileHeaderCardstyles__UserinfoName-wboshd-2.DZXqi').find_all('img')
         
     except: #user not registered in solved.ac
 
@@ -62,14 +62,14 @@ def parseClass(num):
 
     ret = dict()
     try:
-        req = urllib.request.Request("https://solved.ac/class/" + num, headers = {'User-Agent':'Chrome/66.0.3359.181'})
+        req = urllib.request.Request("https://solved.ac/search?query=in_class:" + num, headers = {'User-Agent':'Chrome/66.0.3359.181'})
         response = urllib.request.urlopen(req)
     except:
         return ret
 
     html = response.read()
     soup = BeautifulSoup(html, 'html.parser')
-    table = soup.select_one('#__next > div.contents > div:nth-child(3) > div > div > div.StickyTable__Wrapper-akg1ak-3.tcQcH.sticky-table > div').find_all('div', class_='StickyTable__Row-akg1ak-2 cDWUBS sticky-table-row')
+    table = soup.select_one('#__next > div.contents > div:nth-child(4) > div:nth-child(2) > div > div.StickyTable__Wrapper-sc-10gspwa-3.fIeoKp.sticky-table > div').find_all('div', class_='StickyTable__Row-sc-10gspwa-2 hBHiWI sticky-table-row')
     table = table[1:] # remove title
     ret['problem'] = []
     ret['essential'] = []
